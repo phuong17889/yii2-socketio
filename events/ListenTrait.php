@@ -36,6 +36,14 @@ trait ListenTrait
 	}
 
 	/**
+	 * @return string
+	 */
+	public static function name(): string
+	{
+		return 'room';//one channel has only one room event
+	}
+
+	/**
 	 * @param $room_id
 	 *
 	 * @return mixed

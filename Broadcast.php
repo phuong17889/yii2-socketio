@@ -37,10 +37,6 @@ class Broadcast
         array_walk_recursive($data, function (&$item, $key) {
             $item = HtmlPurifier::process($item);
         });
-echo '<pre>';
-print_r($data);
-print_r($event);
-die;
         Yii::info(Json::encode([
             'type' => 'on',
             'name' => $event,

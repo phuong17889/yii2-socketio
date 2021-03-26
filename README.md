@@ -209,7 +209,7 @@ Socket.io has room function. If you need it, you should implement `EventRoomInte
         protected $userId;
         
         /**
-         * Changel name. For client side this is nsp.
+         * Channel name. For client side this is nsp.
          */
         public static function broadcastOn(): array
         {
