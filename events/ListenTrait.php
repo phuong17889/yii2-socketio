@@ -1,0 +1,58 @@
+<?php
+/**
+ * Created by FES VPN.
+ * @project bestbuyiptv-shop
+ * @author  Le Phuong
+ * @email   phuong17889[at]gmail.com
+ * @date    3/26/2021
+ * @time    11:39 AM
+ */
+
+namespace phuong17889\socketio\events;
+trait ListenTrait
+{
+
+	/**
+	 * Listen event on room
+	 * @param array $data
+	 */
+	public function listen(array $data)
+	{
+		if (isset($data['type']))
+		{
+			switch ($data['type'])
+			{
+				case 'leave':
+					$this->onLeave($data['room_id']);
+					break;
+				case 'join':
+					$this->onJoin($data['room_id']);
+					break;
+				case 'disconnect':
+					$this->onDisconnect($data['room_id']);
+					break;
+			}
+		}
+	}
+
+	/**
+	 * @param $room_id
+	 *
+	 * @return mixed
+	 */
+	abstract public function onLeave($room_id);
+
+	/**
+	 * @param $room_id
+	 *
+	 * @return mixed
+	 */
+	abstract public function onDisconnect($room_id);
+
+	/**
+	 * @param $room_id
+	 *
+	 * @return mixed
+	 */
+	abstract public function onJoin($room_id);
+}

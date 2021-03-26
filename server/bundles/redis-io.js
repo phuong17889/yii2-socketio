@@ -53,21 +53,37 @@ class RedisIO {
         nspio.on('connection', (socket) => {
             socket.roomIO = new RoomIO(socket);
             socket.access = new AccessIO(socket);
+            console.log('connect');
 
             socket = this.wildcard(socket);
-            socket.on('disconnect', () => {
-                // socket.io disconnect
-            });
-
+            let session;
             socket.on('*', (name, data) => {
+                console.log(name);
                 data = data || {};
+                session = data;
                 if (true === socket.access.can(name)) {
                     switch (name) {
                         case 'join' :
+                            console.log('join');
                             socket.roomIO.join(data.room);
+                            this.pub.publish(channel + '.io', JSON.stringify({
+                                name: 'listen',
+                                data: {
+                                    'type' : 'join',
+                                    room_id: data.room
+                                }
+                            }));
                             break;
                         case 'leave':
+                            console.log('leave');
                             socket.roomIO.leave();
+                            this.pub.publish(channel + '.io', JSON.stringify({
+                                name: 'listen',
+                                data: {
+                                    'type' : 'leave',
+                                    room_id: data.room
+                                }
+                            }));
                             break;
                         default:
                             data.room = socket.roomIO.name();
@@ -78,6 +94,19 @@ class RedisIO {
                     }
                 }else{
                     throw new Error(util.format('Socket %s "can not get access/speed limit", nsp: %s, room: %s, name: %s, data: %s', socket.id, nsp, socket.roomIO.name(), name, JSON.stringify(data)));
+                }
+            });
+            socket.on('disconnect', () => {
+                // socket.io disconnect
+                console.log('disconnect');
+                if(session !== null) {
+                    this.pub.publish(channel + '.io', JSON.stringify({
+                        name: 'listen',
+                        data: {
+                            'type' : 'disconnect',
+                            room_id: session.room
+                        }
+                    }));
                 }
             });
         });

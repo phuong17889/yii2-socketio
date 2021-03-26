@@ -1,6 +1,6 @@
 <?php
 
-namespace yiicod\socketio;
+namespace phuong17889\socketio;
 
 use Exception;
 use Yii;
@@ -8,16 +8,16 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\HtmlPurifier;
 use yii\helpers\Json;
 use yiicod\base\helpers\LoggerMessage;
-use yiicod\socketio\drivers\RedisDriver;
-use yiicod\socketio\events\EventPolicyInterface;
-use yiicod\socketio\events\EventPubInterface;
-use yiicod\socketio\events\EventRoomInterface;
-use yiicod\socketio\events\EventSubInterface;
+use phuong17889\socketio\drivers\RedisDriver;
+use phuong17889\socketio\events\EventPolicyInterface;
+use phuong17889\socketio\events\EventPubInterface;
+use phuong17889\socketio\events\EventRoomInterface;
+use phuong17889\socketio\events\EventSubInterface;
 
 /**
  * Class Broadcast
  *
- * @package yiicod\socketio
+ * @package phuong17889\socketio
  */
 class Broadcast
 {

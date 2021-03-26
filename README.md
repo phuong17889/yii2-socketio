@@ -3,17 +3,16 @@ Socket.io Yii extension
 
 Use all power of socket.io in your Yii 2 project.
 
-[![Latest Stable Version](https://poser.pugx.org/yiicod/yii2-socketio/v/stable)](https://packagist.org/packages/yiicod/yii2-socketio) [![Total Downloads](https://poser.pugx.org/yiicod/yii2-socketio/downloads)](https://packagist.org/packages/yiicod/yii2-socketio) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yiicod/yii2-socketio/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yiicod/yii2-socketio/?branch=master)[![Code Climate](https://codeclimate.com/github/yiicod/yii2-socketio/badges/gpa.svg)](https://codeclimate.com/github/yiicod/yii2-socketio)
+[![Latest Stable Version](https://poser.pugx.org/phuong17889/yii2-socketio/v/stable)](https://packagist.org/packages/phuong17889/yii2-socketio) [![Total Downloads](https://poser.pugx.org/phuong17889/yii2-socketio/downloads)](https://packagist.org/packages/phuong17889/yii2-socketio) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/phuong17889/yii2-socketio/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/phuong17889/yii2-socketio/?branch=master)[![Code Climate](https://codeclimate.com/github/phuong17889/yii2-socketio/badges/gpa.svg)](https://codeclimate.com/github/phuong17889/yii2-socketio)
 
 Config
 ------
 
 ##### Install node + additional npm
 ```bash
-    cd ~
-    curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh
-    sudo bash nodesource_setup.sh
-    cd vendor/yiicod/yii2-soketio/server
+    curl -fsSL https://deb.nodesource.com/setup_15.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+    cd vendor/phuong17889/yii2-soketio/server
     npm install
 ```
 
@@ -21,7 +20,7 @@ Config
 ```php
     'controllerMap' => [
         'socketio' => [
-            'class' => \yiicod\socketio\commands\SocketIoCommand::class,
+            'class' => \phuong17889\socketio\commands\SocketIoCommand::class,
             'server' => 'localhost:1367'
         ],
     ]       
@@ -34,65 +33,12 @@ Config
 ```bash
     php yii socketio/stop
 ```
-#### Console config + PM2(http://pm2.keymetrics.io/). This variant more preferable for console configuration
-```php
-    'controllerMap' => [
-        'socketio' => [
-            'class' => \yiicod\socketio\commands\WorkerCommand::class,
-            'server' => 'localhost:1367'
-        ],
-    ]
-```
-###### pm2 config:
-```json
-    {
-      "apps": [
-        {
-          "name": "socket-io-node-js-server",
-          "script": "yii",
-          "args": [
-            "socketio/node-js-server"
-          ],
-          "exec_interpreter": "php",
-          "exec_mode": "fork_mode",
-          "max_memory_restart": "1G",
-          "watch": false,
-          "merge_logs": true,
-          "out_file": "runtime/logs/node_js_server_out.log",
-          "error_file": "runtime/logs/node_js_server_err.log"
-        },
-        {
-          "name": "socket-io-php-server",
-          "script": "yii",
-          "args": [
-            "socketio/php-server"
-          ],
-          "exec_interpreter": "php",
-          "exec_mode": "fork_mode",
-          "max_memory_restart": "1G",
-          "watch": false,
-          "merge_logs": true,
-          "out_file": "runtime/logs/php_server_out.log",
-          "error_file": "runtime/logs/php_server_err.log"
-        },
-      ]
-    }
-```
-###### Run PM2 daemons
-```bash
-pm2 start daemons-app.json
-```
-###### PM2 will be run these two commands in background::
-```bash
-    php yii socketio/node-js-server
-    php yii socketio/php-server
-```
 
 ##### Common config
 ```php
     'components' =>[
         'broadcastEvents' => [
-            'class' => \yiicod\socketio\EventManager::class,
+            'class' => \phuong17889\socketio\EventManager::class,
             'nsp' => 'some_unique_key',
             // Namespaces with events folders
             'namespaces' => [
@@ -100,7 +46,7 @@ pm2 start daemons-app.json
             ]
         ],
         'broadcastDriver' => [
-            'class' => \yiicod\socketio\drivers\RedisDriver::class,
+            'class' => \phuong17889\socketio\drivers\RedisDriver::class,
             'hostname' => 'localhost',
             'port' => 6379,
         ],    
@@ -109,8 +55,8 @@ pm2 start daemons-app.json
 
 ##### Create publisher from server to client
 ```php
-    use yiicod\socketio\events\EventInterface;
-    use yiicod\socketio\events\EventPubInterface;
+    use phuong17889\socketio\events\EventInterface;
+    use phuong17889\socketio\events\EventPubInterface;
     
     class CountEvent implements EventInterface, EventPubInterface
     {
@@ -149,14 +95,14 @@ pm2 start daemons-app.json
 ```
 ```php
     //Run broadcast to client
-    \yiicod\socketio\Broadcast::emit(CountEvent::name(), ['count' => 10])
+    \phuong17889\socketio\Broadcast::emit(CountEvent::name(), ['count' => 10]);
 
 ```
 
 ##### Create receiver from client to server
 ```php
-    use yiicod\socketio\events\EventInterface;
-    use yiicod\socketio\events\EventSubInterface;
+    use phuong17889\socketio\events\EventInterface;
+    use phuong17889\socketio\events\EventSubInterface;
     
     class MarkAsReadEvent implements EventInterface, EventSubInterface
     {
@@ -202,9 +148,9 @@ You can have publisher and receiver in one event. If you need check data from cl
 
 ##### Receiver with checking from client to server
 ```php
-    use yiicod\socketio\events\EventSubInterface;
-    use yiicod\socketio\events\EventInterface;
-    use yiicod\socketio\events\EventPolicyInterface;
+    use phuong17889\socketio\events\EventSubInterface;
+    use phuong17889\socketio\events\EventInterface;
+    use phuong17889\socketio\events\EventPolicyInterface;
     
     class MarkAsReadEvent implements EventInterface, EventSubInterface, EventPolicyInterface
     {
@@ -244,15 +190,17 @@ You can have publisher and receiver in one event. If you need check data from cl
     }
 ```
 
-Soket.io has room functionl. If you need it, you should implement:
-- EventRoomInterface
+Soket.io has room function. If you need it, you should implement `EventRoomInterface` and use `ListenTrait` (no require) to handle `join`, `leave`, `disconnect` event
+
 ```php
-    use yiicod\socketio\events\EventPubInterface;
-    use yiicod\socketio\events\EventInterface;
-    use yiicod\socketio\events\EventRoomInterface;
+    use phuong17889\socketio\events\EventPubInterface;
+    use phuong17889\socketio\events\EventInterface;
+    use phuong17889\socketio\events\EventRoomInterface;
+    use phuong17889\socketio\events\ListenTrait;
     
     class CountEvent implements EventInterface, EventPubInterface, EventRoomInterface
     {
+        use ListenTrait;
         /**
          * User id
          * @var int
@@ -281,7 +229,7 @@ Soket.io has room functionl. If you need it, you should implement:
          */
         public function room(): string
         {
-            return 'user_id_' . $this->>userId;
+            return 'user_id_' . $this->userId;
         }            
             
         /**
@@ -296,12 +244,24 @@ Soket.io has room functionl. If you need it, you should implement:
                 'count' => 10,
             ];
         }
+        
+        public function onLeave($room_id){
+         // TODO: Implement onLeave() method.
+        }
+        
+        public function onDisconnect($room_id){
+         // TODO: Implement onDisconnect() method.
+        }
+        
+        public function onJoin($room_id){
+         // TODO: Implement onJoin() method.
+        }
     }
 ```
 ```js
     var socket = io('localhost:1367/notifications');
-    socket.emit('join', {room: 'user_id_'<?= 10 ?>});
-    // Now you will receive data from 'room-1'
+    socket.emit('join', {room: 'user_id_<?= 10 ?>'});
+    // Now you will receive data from 'room-10'
     socket.on('update_notification_count', function(data){
         console.log(data)
     });
@@ -310,6 +270,6 @@ Soket.io has room functionl. If you need it, you should implement:
 ```
 ```php
     //Run broadcast to user id = 10 
-    \yiicod\socketio\Broadcast::emit(CountEvent::name(), ['count' => 10, 'userId' => 10])
+    \phuong17889\socketio\Broadcast::emit(CountEvent::name(), ['count' => 10, 'userId' => 10]);
 
 ```
