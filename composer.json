@@ -8,11 +8,16 @@
       "name": "Alexey Orlov",
       "email": "aaorlov88@gmail.com",
       "role": "Developer"
+    },
+    {
+      "name": "Le Phuong",
+      "email": "phuong17889@gmail.com",
+      "role": "Developer"
     }
   ],
   "require": {
     "yiisoft/yii2": "2.*",
-    "phuong17889/yii2-cron": "1.*",
+    "yiicod/yii2-cron": "1.*",
     "yiicod/yii2-base": "1.*",
     "symfony/process": "~3.0|~4.0",
     "predis/predis": "~1.1.0"
