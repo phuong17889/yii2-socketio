@@ -266,7 +266,7 @@ You should use trait `ListenTrait`
         protected $userId;
         
         /**
-         * Changel name. For client side this is nsp.
+         * Channel name. For client side this is nsp.
          */
         public static function broadcastOn(): array
         {
@@ -278,7 +278,7 @@ You should use trait `ListenTrait`
          */
         public static function name(): string
         {
-            return 'update_notification_count';
+            return 'room';//one channel has only one room event
         }
            
         /**

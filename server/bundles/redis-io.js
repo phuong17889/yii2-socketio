@@ -67,9 +67,9 @@ class RedisIO {
                             console.log('join');
                             socket.roomIO.join(data.room);
                             this.pub.publish(channel + '.io', JSON.stringify({
-                                name: 'listen',
+                                name: 'room',
                                 data: {
-                                    'type' : 'join',
+                                    type : 'join',
                                     room_id: data.room
                                 }
                             }));
@@ -78,7 +78,7 @@ class RedisIO {
                             console.log('leave');
                             socket.roomIO.leave();
                             this.pub.publish(channel + '.io', JSON.stringify({
-                                name: 'listen',
+                                name: 'room',
                                 data: {
                                     'type' : 'leave',
                                     room_id: data.room
@@ -101,7 +101,7 @@ class RedisIO {
                 console.log('disconnect');
                 if(session !== null) {
                     this.pub.publish(channel + '.io', JSON.stringify({
-                        name: 'listen',
+                        name: 'room',
                         data: {
                             'type' : 'disconnect',
                             room_id: session.room
