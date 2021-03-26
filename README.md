@@ -39,7 +39,7 @@ Config
     'components' =>[
         'broadcastEvents' => [
             'class' => \phuong17889\socketio\EventManager::class,
-            'nsp' => 'some_unique_key',
+            'nsp' => 'some_unique_key', //must be changed
             // Namespaces with events folders
             'namespaces' => [
                 'app\socketio',
@@ -52,8 +52,8 @@ Config
         ],    
     ]
 ```
-
-##### Create publisher from server to client
+## Publisher
+### Create publisher from server to client
 ```php
     use phuong17889\socketio\events\EventInterface;
     use phuong17889\socketio\events\EventPubInterface;
@@ -99,7 +99,8 @@ Config
 
 ```
 
-##### Create receiver from client to server
+## Receiver
+### Create receiver from client to server
 ```php
     use phuong17889\socketio\events\EventInterface;
     use phuong17889\socketio\events\EventSubInterface;
@@ -143,10 +144,10 @@ Config
     socket.emit('mark_as_read_notification', {id: 10});
 ```
 
+### Receiver with checking from client to server
 You can have publisher and receiver in one event. If you need check data from client to server you should use: 
 - EventPolicyInterface
 
-##### Receiver with checking from client to server
 ```php
     use phuong17889\socketio\events\EventSubInterface;
     use phuong17889\socketio\events\EventInterface;
@@ -190,7 +191,64 @@ You can have publisher and receiver in one event. If you need check data from cl
     }
 ```
 
-Soket.io has room function. If you need it, you should implement `EventRoomInterface` and use `ListenTrait` (no require) to handle `join`, `leave`, `disconnect` event
+## Room
+### Subscribe room
+Socket.io has room function. If you need it, you should implement `EventRoomInterface`
+
+```php
+    use phuong17889\socketio\events\EventPubInterface;
+    use phuong17889\socketio\events\EventInterface;
+    use phuong17889\socketio\events\EventRoomInterface;
+    
+    class CountEvent implements EventInterface, EventPubInterface, EventRoomInterface
+    {
+        /**
+         * User id
+         * @var int
+         */
+        protected $userId;
+        
+        /**
+         * Changel name. For client side this is nsp.
+         */
+        public static function broadcastOn(): array
+        {
+            return ['notifications'];
+        }
+    
+        /**
+         * Event name
+         */
+        public static function name(): string
+        {
+            return 'update_notification_count';
+        }
+           
+        /**
+         * Socket.io room
+         * @return string
+         */
+        public function room(): string
+        {
+            return 'user_id_' . $this->userId;
+        }            
+            
+        /**
+         * Emit client event
+         * @param array $data
+         * @return array
+         */
+        public function fire(array $data): array
+        {
+            $this->userId = $data['userId'];
+            return [
+                'count' => 10,
+            ];
+        }
+    }
+```
+### Subscribe room with event
+You should use trait `ListenTrait`
 
 ```php
     use phuong17889\socketio\events\EventPubInterface;
@@ -245,18 +303,28 @@ Soket.io has room function. If you need it, you should implement `EventRoomInter
             ];
         }
         
-        public function onLeave($room_id){
+        public function handle(array $data)
+        {
+            $this->listen($data); //must place before your code
+            file_put_contents(\Yii::getAlias('@app/../file.txt'), serialize($data));
+        }
+        
+        public function onLeave($room_id)
+        {
          // TODO: Implement onLeave() method.
         }
         
-        public function onDisconnect($room_id){
+        public function onDisconnect($room_id)
+        {
          // TODO: Implement onDisconnect() method.
         }
         
-        public function onJoin($room_id){
+        public function onJoin($room_id)
+        {
          // TODO: Implement onJoin() method.
         }
     }
+
 ```
 ```js
     var socket = io('localhost:1367/notifications');
