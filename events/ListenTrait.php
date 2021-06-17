@@ -9,7 +9,6 @@
  */
 
 namespace phuong17889\socketio\events;
-use yii\helpers\Json;
 
 trait ListenTrait
 {
@@ -23,7 +22,6 @@ trait ListenTrait
 		$channel = current(self::broadcastOn());
 		if (isset($data['channel']) && $data['channel'] == $channel)
 		{
-			file_put_contents(\Yii::getAlias('@runtime/' . $channel . '-listen.txt'), Json::encode($data), FILE_APPEND);
 			if (isset($data['type']) && isset($data['room_id']))
 			{
 				switch ($data['type'])
