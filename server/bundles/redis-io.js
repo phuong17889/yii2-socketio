@@ -53,58 +53,60 @@ class RedisIO {
         nspio.on('connection', (socket) => {
             socket.roomIO = new RoomIO(socket);
             socket.access = new AccessIO(socket);
-            console.log('connect');
 
             socket = this.wildcard(socket);
-            let session;
             socket.on('*', (name, data) => {
-                console.log(name);
                 data = data || {};
-                session = data;
                 if (true === socket.access.can(name)) {
+                    console.log('channel: ' + channel);
                     switch (name) {
                         case 'join' :
-                            console.log('join');
+                            console.log('    join: ' + data.room);
                             socket.roomIO.join(data.room);
                             this.pub.publish(channel + '.io', JSON.stringify({
                                 name: 'room',
                                 data: {
-                                    type : 'join',
-                                    room_id: data.room
+                                    type: 'join',
+                                    room_id: data.room,
+                                    channel: nsp
                                 }
                             }));
                             break;
                         case 'leave':
-                            console.log('leave');
+                            console.log('    leave: ' + data.room);
                             socket.roomIO.leave();
                             this.pub.publish(channel + '.io', JSON.stringify({
                                 name: 'room',
                                 data: {
-                                    'type' : 'leave',
-                                    room_id: data.room
+                                    type: 'leave',
+                                    room_id: data.room,
+                                    channel: nsp
                                 }
                             }));
                             break;
                         default:
                             data.room = socket.roomIO.name();
+                            console.log('    ' + name + ':' + data);
                             this.pub.publish(channel + '.io', JSON.stringify({
                                 name: name,
-                                data: data
+                                data: data,
+                                channel: nsp
                             }));
                     }
-                }else{
+                } else {
                     throw new Error(util.format('Socket %s "can not get access/speed limit", nsp: %s, room: %s, name: %s, data: %s', socket.id, nsp, socket.roomIO.name(), name, JSON.stringify(data)));
                 }
             });
             socket.on('disconnect', () => {
                 // socket.io disconnect
-                console.log('disconnect');
-                if(session !== null) {
+                console.log('    disconnect: ' + socket.roomIO.name());
+                if(socket.roomIO) {
                     this.pub.publish(channel + '.io', JSON.stringify({
                         name: 'room',
                         data: {
-                            'type' : 'disconnect',
-                            room_id: session.room
+                            type: 'disconnect',
+                            room_id: socket.roomIO.name(),
+                            channel: nsp
                         }
                     }));
                 }

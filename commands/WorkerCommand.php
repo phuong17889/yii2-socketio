@@ -9,7 +9,8 @@ use yii\console\Controller;
  *
  * @package phuong17889\socketio\commands
  */
-class WorkerCommand extends Controller {
+class WorkerCommand extends Controller
+{
 
 	use CommandTrait;
 
@@ -28,7 +29,8 @@ class WorkerCommand extends Controller {
 	 *
 	 * @throws \Exception
 	 */
-	public function actionNodeJsServer() {
+	public function actionNodeJsServer()
+	{
 		$process = $this->nodejs();
 		$process->setTimeout(null);
 		$process->setIdleTimeout(null);
@@ -40,16 +42,19 @@ class WorkerCommand extends Controller {
 	 *
 	 * @throws \Exception
 	 */
-	public function actionPhpServer() {
-		while (true) {
+	public function actionPhpServer()
+	{
+		while (true)
+		{
 			$this->predis();
 		}
 	}
 
 	/**
-	 * @return FileOutput
+	 * @param $text
 	 */
-	protected function output($text) {
+	protected function output($text)
+	{
 		$this->stdout($text);
 	}
 }

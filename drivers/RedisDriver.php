@@ -2,10 +2,10 @@
 
 namespace phuong17889\socketio\drivers;
 
+use Predis\Client;
 use yii\helpers\ArrayHelper;
 
 /**
- * @todo Implement username and password
  *
  * Class RedisDriver
  *
@@ -26,12 +26,12 @@ class RedisDriver
     /**
      * Get predis connection
      *
-     * @return \Predis\Client
+     * @return Client
      */
     public function getConnection($reset = false)
     {
         if (null === $this->connection || true === $reset) {
-            $this->connection = new \Predis\Client(ArrayHelper::merge([
+            $this->connection = new Client(ArrayHelper::merge([
                 'scheme' => 'tcp',
                 'read_write_timeout' => 0,
             ], [

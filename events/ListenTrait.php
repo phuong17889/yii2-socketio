@@ -9,6 +9,8 @@
  */
 
 namespace phuong17889\socketio\events;
+use yii\helpers\Json;
+
 trait ListenTrait
 {
 
@@ -18,19 +20,24 @@ trait ListenTrait
 	 */
 	public function listen(array $data)
 	{
-		if (isset($data['type']))
+		$channel = current(self::broadcastOn());
+		if (isset($data['channel']) && $data['channel'] == $channel)
 		{
-			switch ($data['type'])
+			file_put_contents(\Yii::getAlias('@runtime/' . $channel . '-listen.txt'), Json::encode($data), FILE_APPEND);
+			if (isset($data['type']) && isset($data['room_id']))
 			{
-				case 'leave':
-					$this->onLeave($data['room_id']);
-					break;
-				case 'join':
-					$this->onJoin($data['room_id']);
-					break;
-				case 'disconnect':
-					$this->onDisconnect($data['room_id']);
-					break;
+				switch ($data['type'])
+				{
+					case 'leave':
+						$this->onLeave($data['room_id']);
+						break;
+					case 'join':
+						$this->onJoin($data['room_id']);
+						break;
+					case 'disconnect':
+						$this->onDisconnect($data['room_id']);
+						break;
+				}
 			}
 		}
 	}

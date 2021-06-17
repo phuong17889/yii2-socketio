@@ -4,7 +4,6 @@ namespace phuong17889\socketio;
 
 use Yii;
 use yii\base\Component;
-use yii\helpers\Json;
 
 class EventManager extends Component
 {
@@ -28,8 +27,12 @@ class EventManager extends Component
      * @var array
      */
     protected static $list = [];
+    protected static $listReverse = [];
 
-    public function getList(): array
+	/**
+	 * @return array
+	 */
+	public function getList(): array
     {
         if (empty(static::$list)) {
             foreach ($this->namespaces as $key => $namespace) {
@@ -45,5 +48,29 @@ class EventManager extends Component
         }
 
         return static::$list;
+    }
+
+	/**
+	 * @return array
+	 */
+	public function getListReverse(): array
+    {
+        if (empty(static::$listReverse)) {
+            foreach ($this->namespaces as $key => $namespace) {
+                $alias = Yii::getAlias('@' . str_replace('\\', '/', trim($namespace, '\\')));
+                foreach (glob(sprintf('%s/**.php', $alias)) as $file) {
+                    $className = sprintf('%s\%s', $namespace, basename($file, '.php'));
+                    if (method_exists($className, 'name')) {
+	                    if (strpos($className::name(), $key) !== false) {
+		                    static::$listReverse[$className::name()] = $className;
+	                    } else {
+		                    static::$listReverse[$key . '_' . $className::name()] = $className;
+	                    }
+                    }
+                }
+            }
+        }
+
+        return static::$listReverse;
     }
 }

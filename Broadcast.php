@@ -34,7 +34,7 @@ class Broadcast
     public static function on(string $event, array $data)
     {
         // Clear data
-        array_walk_recursive($data, function (&$item, $key) {
+        array_walk_recursive($data, function (&$item) {
             $item = HtmlPurifier::process($item);
         });
         Yii::info(Json::encode([
@@ -42,12 +42,10 @@ class Broadcast
             'name' => $event,
             'data' => $data,
         ]), 'socket.io');
-
-        $eventClassName = self::getManager()->getList()[$event] ?? null;
+        $eventClassName = self::getManager()->getListReverse()[$event] ?? null;
         if (null === $eventClassName) {
-            Yii::error(LoggerMessage::trace("Can not find $event", Json::encode($data)));
+            Yii::error(LoggerMessage::trace("Can not find $event", $data));
         }
-
         Yii::$container->get(Process::class)->run($eventClassName, $data);
     }
 

@@ -12,6 +12,7 @@ interface EventRoomInterface
 {
     /**
      * Get room name
+     * It's must be `room`
      *
      * @return string
      */

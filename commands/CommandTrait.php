@@ -2,12 +2,11 @@
 
 namespace phuong17889\socketio\commands;
 
+use phuong17889\socketio\Broadcast;
 use Symfony\Component\Process\Process;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Console;
 use yii\helpers\Json;
-use phuong17889\socketio\Broadcast;
 
 trait CommandTrait
 {
@@ -34,7 +33,10 @@ trait CommandTrait
         Broadcast::process($handler, @json_decode($data, true) ?? []);
     }
 
-    public function nodejs()
+	/**
+	 * @return Process
+	 */
+	public function nodejs()
     {
         // Automatically send every new message to available log routes
         Yii::getLogger()->flushInterval = 1;
@@ -60,10 +62,7 @@ trait CommandTrait
         foreach ($args as $key => $value) {
             $cmd .= ' -' . $key . '=\'' . $value . '\'';
         }
-
-        $process = new Process($cmd);
-
-        return $process;
+	    return new Process($cmd);
     }
 
     /**
@@ -97,29 +96,18 @@ trait CommandTrait
                     case 'message':
                         if ('control_channel' == $message->channel) {
                             if ('quit_loop' == $message->payload) {
-                                $this->output("Aborting pubsub loop...\n", Console::FG_RED);
+                                $this->output("Aborting pubsub loop...\n");
                                 $pubsub->unsubscribe();
                             } else {
-                                $this->output("Received an unrecognized command: {$message->payload}\n", Console::FG_RED);
+                                $this->output("Received an unrecognized command: {$message->payload}\n");
                             }
                         } else {
                             $payload = Json::decode($message->payload);
                             $data = $payload['data'] ?? [];
-
-//                            $pid = pcntl_fork();
-//                            if ($pid == -1) {
-//                                exit('Error while forking process.');
-//                            } elseif ($pid) {
-//                                //parent. Wait for the child and continues
-//                                pcntl_wait($status);
-//                                $exitStatus = pcntl_wexitstatus($status);
-//                                if ($exitStatus !== 0) {
-//                                    //put job back to queue or other stuff
-//                                }
-//                            }else {
+	                        if (isset($data['channel']) && strpos($payload['name'], $data['channel']) === false) {
+		                        $payload['name'] = $data['channel'] . '_' . $payload['name'];
+	                        }
                             Broadcast::on($payload['name'], $data);
-//                                Yii::$app->end();
-//                            }
                             // Received the following message from {$message->channel}:") {$message->payload}";
                         }
                         break;
