@@ -274,14 +274,6 @@ You should use trait `ListenTrait`
         }
     
         /**
-         * Event name
-         */
-        public static function name(): string
-        {
-            return 'room';//one channel has only one room event
-        }
-           
-        /**
          * Socket.io room
          * @return string
          */
