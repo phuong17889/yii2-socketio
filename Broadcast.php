@@ -3,16 +3,16 @@
 namespace phuong17889\socketio;
 
 use Exception;
-use Yii;
-use yii\helpers\ArrayHelper;
-use yii\helpers\HtmlPurifier;
-use yii\helpers\Json;
-use yiicod\base\helpers\LoggerMessage;
 use phuong17889\socketio\drivers\RedisDriver;
 use phuong17889\socketio\events\EventPolicyInterface;
 use phuong17889\socketio\events\EventPubInterface;
 use phuong17889\socketio\events\EventRoomInterface;
 use phuong17889\socketio\events\EventSubInterface;
+use Yii;
+use yii\helpers\ArrayHelper;
+use yii\helpers\HtmlPurifier;
+use yii\helpers\Json;
+use yiicod\base\helpers\LoggerMessage;
 
 /**
  * Class Broadcast
@@ -42,11 +42,12 @@ class Broadcast
             'name' => $event,
             'data' => $data,
         ]), 'socket.io');
-        $eventClassName = self::getManager()->getListReverse()[$event] ?? null;
-        if (null === $eventClassName) {
-            Yii::error(LoggerMessage::trace("Can not find $event", $data));
-        }
-        Yii::$container->get(Process::class)->run($eventClassName, $data);
+	    $eventClassName = self::getManager()->getListReverse()[$event] ?? null;
+	    if ($eventClassName !== null) {
+		    Yii::$container->get(Process::class)->run($eventClassName, $data);
+	    } else {
+		    Yii::error(LoggerMessage::trace("Can not find $event", $data));
+	    }
     }
 
     /**
