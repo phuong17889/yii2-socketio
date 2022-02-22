@@ -18,8 +18,8 @@
 	"require" : {
 		"ext-json" : "*",
 		"yiisoft/yii2" : "2.*",
-		"yiicod/yii2-cron" : "1.*",
-		"yiicod/yii2-base" : "1.*",
+		"phuong17889/yii2-cron" : "*",
+		"phuong17889/yii2-base" : "*",
 		"symfony/process" : "~3.0|~4.0",
 		"predis/predis" : "~1.1.0"
 	},

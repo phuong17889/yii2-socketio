@@ -2,9 +2,7 @@
 
 namespace phuong17889\socketio\commands;
 
-use Symfony\Component\Process\Process;
-use yiicod\cron\commands\DaemonController;
-use phuong17889\socketio\Broadcast;
+use phuong17889\cron\commands\DaemonController;
 
 /**
  * Class SocketIoCommand
