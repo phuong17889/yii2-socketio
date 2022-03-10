@@ -1,6 +1,6 @@
 <?php
 
-namespace phuong17889\base\helpers;
+namespace phuong17889\socketio\helpers;
 
 use Throwable;
 
