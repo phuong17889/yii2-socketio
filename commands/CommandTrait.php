@@ -104,7 +104,7 @@ trait CommandTrait
                         } else {
                             $payload = Json::decode($message->payload);
                             $data = $payload['data'] ?? [];
-	                        if (isset($data['channel']) && strpos($payload['name'], $data['channel']) === false) {
+	                        if (isset($data['channel']) && $data['channel'] != '' && strpos($payload['name'], $data['channel']) === false) {
 		                        $payload['name'] = $data['channel'] . '_' . $payload['name'];
 	                        }
                             Broadcast::on($payload['name'], $data);
