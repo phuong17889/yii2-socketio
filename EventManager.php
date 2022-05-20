@@ -29,10 +29,10 @@ class EventManager extends Component
     protected static $list = [];
     protected static $listReverse = [];
 
-	/**
-	 * @return array
-	 */
-	public function getList(): array
+    /**
+     * @return array
+     */
+    public function getList(): array
     {
         if (empty(static::$list)) {
             foreach ($this->namespaces as $key => $namespace) {
@@ -44,16 +44,14 @@ class EventManager extends Component
                     }
                 }
             }
-            //Yii::info(Json::encode(static::$list));
         }
-
         return static::$list;
     }
 
-	/**
-	 * @return array
-	 */
-	public function getListReverse(): array
+    /**
+     * @return array
+     */
+    public function getListReverse(): array
     {
         if (empty(static::$listReverse)) {
             foreach ($this->namespaces as $key => $namespace) {
@@ -61,16 +59,15 @@ class EventManager extends Component
                 foreach (glob(sprintf('%s/**.php', $alias)) as $file) {
                     $className = sprintf('%s\%s', $namespace, basename($file, '.php'));
                     if (method_exists($className, 'name')) {
-	                    if (strpos($className::name(), $key) !== false) {
-		                    static::$listReverse[$className::name()] = $className;
-	                    } else {
-		                    static::$listReverse[$key . '_' . $className::name()] = $className;
-	                    }
+                        if (strpos($className::name(), $key) !== false) {
+                            static::$listReverse[$className::name()] = $className;
+                        } else {
+                            static::$listReverse[$key . '_' . $className::name()] = $className;
+                        }
                     }
                 }
             }
         }
-
         return static::$listReverse;
     }
 }

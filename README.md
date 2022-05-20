@@ -3,7 +3,7 @@ Socket.io Yii extension
 
 Use all power of socket.io in your Yii 2 project.
 
-[![Latest Stable Version](https://poser.pugx.org/phuong17889/yii2-socketio/v/stable)](https://packagist.org/packages/phuong17889/yii2-socketio) [![Total Downloads](https://poser.pugx.org/phuong17889/yii2-socketio/downloads)](https://packagist.org/packages/phuong17889/yii2-socketio) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/phuong17889/yii2-socketio/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/phuong17889/yii2-socketio/?branch=master)[![Code Climate](https://codeclimate.com/github/phuong17889/yii2-socketio/badges/gpa.svg)](https://codeclimate.com/github/phuong17889/yii2-socketio)
+[![Latest Stable Version](https://poser.pugx.org/phuong17889/yii2-socketio/v/stable)](https://packagist.org/packages/phuong17889/yii2-socketio) [![Total Downloads](https://poser.pugx.org/phuong17889/yii2-socketio/downloads)](https://packagist.org/packages/phuong17889/yii2-socketio)
 
 Config
 ------
@@ -330,6 +330,6 @@ You should use trait `ListenTrait`
 ```
 ```php
     //Run broadcast to user id = 10 
-    \phuong17889\socketio\Broadcast::emit(CountEvent::name(), ['count' => 10, 'userId' => 10]);
+    \phuong17889\socketio\Broadcast::emitToRoom(CountEvent::class, ['count' => 10, 'userId' => 10]);
 
 ```
