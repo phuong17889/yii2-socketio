@@ -5,17 +5,28 @@ Use all power of socket.io in your Yii 2 project.
 
 [![Latest Stable Version](https://poser.pugx.org/phuong17889/yii2-socketio/v/stable)](https://packagist.org/packages/phuong17889/yii2-socketio) [![Total Downloads](https://poser.pugx.org/phuong17889/yii2-socketio/downloads)](https://packagist.org/packages/phuong17889/yii2-socketio)
 
-Config
+Install
 ------
-
-##### Install node + additional npm
-```bash
+##### Install nodejs
+```
     curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
     sudo apt-get install -y nodejs
-    cd vendor/phuong17889/yii2-soketio/server
-    npm install
 ```
-
+##### Add to `composer.json`
+```bash
+{
+    "require" : {
+        "phuong17889/yii2-soketio": "^2"
+    },
+    ...
+    "scripts" : {
+        "post-install-cmd": "cd vendor/phuong17889/yii2-socketio && /usr/bin/npm install",
+        "post-update-cmd": "cd vendor/phuong17889/yii2-socketio && /usr/bin/npm install"
+    }
+}
+```
+Config
+------
 #### Console config (simple fork)
 ```php
     'controllerMap' => [
