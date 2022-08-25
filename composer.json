@@ -41,7 +41,7 @@
 			"yiisoft/yii2-composer": true
 		}
 	},
-	"post-install-cmd": [
+	"post-update-cmd": [
 		"npm install"
 	]
 }
