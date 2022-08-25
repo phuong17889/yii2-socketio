@@ -42,6 +42,6 @@
 		}
 	},
 	"post-install-cmd": [
-		"cd server path/to/installer.php"
+		"npm install"
 	]
 }
