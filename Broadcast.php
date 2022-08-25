@@ -4,6 +4,7 @@ namespace phuong17889\socketio;
 
 use Exception;
 use phuong17889\socketio\drivers\RedisDriver;
+use phuong17889\socketio\events\EventInterface;
 use phuong17889\socketio\events\EventPolicyInterface;
 use phuong17889\socketio\events\EventPubInterface;
 use phuong17889\socketio\events\EventRoomInterface;
@@ -119,7 +120,7 @@ class Broadcast
     /**
      * Emit event to client
      *
-     * @param string $eventClassName full className include namespace. ex: common\socket\event\backend\RoomEvent::class
+     * @param string|EventInterface $eventClassName full className include namespace. ex: common\socket\event\backend\RoomEvent::class
      * @param array $data
      *
      * @throws Exception

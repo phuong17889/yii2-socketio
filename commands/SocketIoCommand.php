@@ -2,7 +2,9 @@
 
 namespace phuong17889\socketio\commands;
 
+use Exception;
 use phuong17889\cron\commands\DaemonController;
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use yii\base\InvalidConfigException;
 
 /**
@@ -25,21 +27,28 @@ class SocketIoCommand extends DaemonController
         return 'socket.io';
     }
 
-    /**
-     * SocketOI worker
-     * @throws InvalidConfigException
-     */
-    public function worker()
+	/**
+	 * SocketOI worker
+	 * @throws InvalidConfigException
+	 * @throws Exception
+	 */
+	public function worker()
     {
-        $process = $this->nodejs();
-        $process->disableOutput();
-        $process->start();
-
-        // Save node proccess pid
-        $this->addPid($process->getPid());
-
-        while ($process->isRunning()) {
-            $this->predis();
-        }
+	    $process = $this->nodejs();
+		$process->setTimeout(3600);
+	    try {
+		    $process->run();
+		    if (!$process->isSuccessful()) {
+			    echo $process->getErrorOutput();
+			    exit(0);
+		    }
+		    // Save node process pid
+		    $this->addPid($process->getPid());
+		    while ($process->isRunning()) {
+			    $this->predis();
+		    }
+	    } catch (ProcessTimedOutException $e) {
+		    $this->actionRestart();
+	    }
     }
 }

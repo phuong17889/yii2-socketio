@@ -2,6 +2,7 @@
 
 namespace phuong17889\socketio\commands;
 
+use Exception;
 use phuong17889\socketio\Broadcast;
 use Symfony\Component\Process\Process;
 use Yii;
@@ -42,36 +43,37 @@ trait CommandTrait
         // Automatically send every new message to available log routes
         Yii::getLogger()->flushInterval = 1;
 	    $cmd = [
-		    'node',
+			'node',
 		    realpath(dirname(__FILE__) . '/../server') . '/index.js',
 	    ];
+	    $driver = Broadcast::getDriver();
         $args = array_filter([
             'server' => $this->server,
             'pub' => Json::encode(array_filter([
-                'host' => Broadcast::getDriver()->hostname,
-                'port' => Broadcast::getDriver()->port,
-                'password' => Broadcast::getDriver()->password,
+                'host' => $driver->hostname,
+                'port' => $driver->port,
+                'password' => $driver->password,
             ])),
             'sub' => Json::encode(array_filter([
-                'host' => Broadcast::getDriver()->hostname,
-                'port' => Broadcast::getDriver()->port,
-                'password' => Broadcast::getDriver()->password,
+                'host' => $driver->hostname,
+                'port' => $driver->port,
+                'password' => $driver->password,
             ])),
             'channels' => implode(',', Broadcast::channels()),
             'nsp' => Broadcast::getManager()->nsp,
             'ssl' => empty($this->ssl) ? null : Json::encode($this->ssl),
             'runtime' => Yii::getAlias('@runtime/logs'),
         ], 'strlen');
-        foreach ($args as $key => $value) {
-            $cmd[] = '-' . $key . '=\'' . $value . '\'';
-        }
+	    foreach ($args as $key => $value) {
+		    $cmd[] = "-" . $key . "=" . $value ;
+	    }
 	    return new Process($cmd);
     }
 
 	/**
-	 * Predis proccess
+	 * Predis process
 	 * @throws InvalidConfigException
-	 * @throws \Exception
+	 * @throws Exception
 	 */
     public function predis()
     {
