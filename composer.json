@@ -40,11 +40,5 @@
 		"allow-plugins" : {
 			"yiisoft/yii2-composer" : true
 		}
-	},
-	"scripts" : {
-		"post-install-cmd": "echo 'post-install-cmd' > post-install-cmd.txt",
-		"post-update-cmd": "echo 'post-update-cmd' > post-update-cmd.txt",
-		"post-package-install" : "echo 'post-package-install' > post-package-install.txt",
-		"post-package-update" : "echo 'post-package-update' > post-package-update.txt"
 	}
 }
