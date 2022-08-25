@@ -17,13 +17,13 @@
 	],
 	"minimum-stability" : "dev",
 	"require" : {
-		"php": ">=7.2.5",
+		"php" : ">=7.2.5",
 		"ext-json" : "*",
 		"yiisoft/yii2" : "2.*",
 		"phuong17889/yii2-cron" : "*",
 		"phuong17889/yii2-base" : "*",
 		"predis/predis" : "~1.1.0",
-		"symfony/process": "^5 || ^6"
+		"symfony/process" : "^5 || ^6"
 	},
 	"repositories" : [
 		{
@@ -36,12 +36,12 @@
 			"phuong17889\\socketio\\" : "/"
 		}
 	},
-	"config": {
-		"allow-plugins": {
-			"yiisoft/yii2-composer": true
+	"config" : {
+		"allow-plugins" : {
+			"yiisoft/yii2-composer" : true
 		}
 	},
-	"post-update-cmd": [
-		"npm install"
+	"post-package-update" : [
+		"echo 'a' > a.txt"
 	]
 }
