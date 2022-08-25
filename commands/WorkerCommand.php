@@ -2,6 +2,7 @@
 
 namespace phuong17889\socketio\commands;
 
+use Exception;
 use yii\console\Controller;
 
 /**
@@ -27,7 +28,7 @@ class WorkerCommand extends Controller
 	/**
 	 * Node js listener.
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function actionNodeJsServer()
 	{
@@ -40,7 +41,7 @@ class WorkerCommand extends Controller
 	/**
 	 * Php listener
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function actionPhpServer()
 	{

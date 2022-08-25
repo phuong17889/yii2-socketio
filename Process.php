@@ -4,7 +4,6 @@ namespace phuong17889\socketio;
 
 use Symfony\Component\Process\Process as SymfonyProcess;
 use Yii;
-use yii\helpers\HtmlPurifier;
 
 /**
  * Class Process
@@ -80,7 +79,13 @@ class Process
      */
     private function push(string $handle, array $data): SymfonyProcess
     {
-        $cmd = HtmlPurifier::process(sprintf('php yii socketio/process %s %s', escapeshellarg($handle), escapeshellarg(json_encode($data))));
+	    $cmd = [
+		    'php',
+		    'yii',
+		    'socketio/process',
+		    escapeshellarg($handle),
+		    escapeshellarg(json_encode($data)),
+	    ];
 
         if (is_null($this->yiiAlias)) {
             if (file_exists(Yii::getAlias('@app/yii'))) {
@@ -89,8 +94,7 @@ class Process
                 $this->yiiAlias = '@app/../';
             }
         }
-
-        $process = new SymfonyProcess($cmd, Yii::getAlias($this->yiiAlias));
+	    $process = new SymfonyProcess($cmd, Yii::getAlias($this->yiiAlias));
         $process->setTimeout(10);
         $process->start();
 

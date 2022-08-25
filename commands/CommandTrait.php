@@ -5,6 +5,7 @@ namespace phuong17889\socketio\commands;
 use phuong17889\socketio\Broadcast;
 use Symfony\Component\Process\Process;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 
@@ -40,34 +41,38 @@ trait CommandTrait
     {
         // Automatically send every new message to available log routes
         Yii::getLogger()->flushInterval = 1;
-
-        $cmd = sprintf('node %s/%s', realpath(dirname(__FILE__) . '/../server'), 'index.js');
+	    $cmd = [
+		    'node',
+		    realpath(dirname(__FILE__) . '/../server') . '/index.js',
+	    ];
         $args = array_filter([
             'server' => $this->server,
-            'pub' => json_encode(array_filter([
+            'pub' => Json::encode(array_filter([
                 'host' => Broadcast::getDriver()->hostname,
                 'port' => Broadcast::getDriver()->port,
                 'password' => Broadcast::getDriver()->password,
             ])),
-            'sub' => json_encode(array_filter([
+            'sub' => Json::encode(array_filter([
                 'host' => Broadcast::getDriver()->hostname,
                 'port' => Broadcast::getDriver()->port,
                 'password' => Broadcast::getDriver()->password,
             ])),
             'channels' => implode(',', Broadcast::channels()),
             'nsp' => Broadcast::getManager()->nsp,
-            'ssl' => empty($this->ssl) ? null : json_encode($this->ssl),
+            'ssl' => empty($this->ssl) ? null : Json::encode($this->ssl),
             'runtime' => Yii::getAlias('@runtime/logs'),
         ], 'strlen');
         foreach ($args as $key => $value) {
-            $cmd .= ' -' . $key . '=\'' . $value . '\'';
+            $cmd[] = '-' . $key . '=\'' . $value . '\'';
         }
 	    return new Process($cmd);
     }
 
-    /**
-     * Predis proccess
-     */
+	/**
+	 * Predis proccess
+	 * @throws InvalidConfigException
+	 * @throws \Exception
+	 */
     public function predis()
     {
         $pubSubLoop = function () {
@@ -91,7 +96,7 @@ trait CommandTrait
             foreach ($pubsub as $message) {
                 switch ($message->kind) {
                     case 'subscribe':
-                        $this->output("Subscribed to {$message->channel}\n");
+                        $this->output("Subscribed to $message->channel\n");
                         break;
                     case 'message':
                         if ('control_channel' == $message->channel) {
@@ -99,7 +104,7 @@ trait CommandTrait
                                 $this->output("Aborting pubsub loop...\n");
                                 $pubsub->unsubscribe();
                             } else {
-                                $this->output("Received an unrecognized command: {$message->payload}\n");
+                                $this->output("Received an unrecognized command: $message->payload\n");
                             }
                         } else {
                             $payload = Json::decode($message->payload);

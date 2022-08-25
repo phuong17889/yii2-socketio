@@ -3,6 +3,7 @@
 namespace phuong17889\socketio\commands;
 
 use phuong17889\cron\commands\DaemonController;
+use yii\base\InvalidConfigException;
 
 /**
  * Class SocketIoCommand
@@ -26,6 +27,7 @@ class SocketIoCommand extends DaemonController
 
     /**
      * SocketOI worker
+     * @throws InvalidConfigException
      */
     public function worker()
     {
