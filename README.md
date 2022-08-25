@@ -16,7 +16,7 @@ Install
 ```bash
 {
     "require" : {
-        "phuong17889/yii2-soketio": "^2"
+        "phuong17889/yii2-socketio": "^2"
     },
     ...
     "scripts" : {
