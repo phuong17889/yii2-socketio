@@ -41,7 +41,8 @@
 			"yiisoft/yii2-composer" : true
 		}
 	},
-	"post-package-update" : [
-		"echo 'a' > a.txt"
-	]
+	"scripts" : {
+		"post-update-cmd": "echo 'post-update-cmd' > post-update-cmd.txt",
+		"post-package-update" : "echo 'post-package-update' > post-package-update.txt"
+	}
 }
