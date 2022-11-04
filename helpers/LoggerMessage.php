@@ -88,7 +88,6 @@ class LoggerMessage
 				}
 			}
 		}
-
 		return $msg;
 	}
 }

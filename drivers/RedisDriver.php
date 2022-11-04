@@ -13,15 +13,26 @@ use yii\helpers\ArrayHelper;
  */
 class RedisDriver
 {
+
+	/**
+	 * @var string redis hostname
+	*/
     public $hostname = 'localhost';
 
+	/**
+	 * @var int redis port
+	 */
     public $port = 6379;
 
-    public $password;
+	/**
+	 * @var string redis password
+	 */
+    public $password = null;
+
     /**
-     * @var
+     * @var Client
      */
-    protected $connection;
+    protected $connection = null;
 
     /**
      * Get predis connection

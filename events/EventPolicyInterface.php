@@ -4,5 +4,11 @@ namespace phuong17889\socketio\events;
 
 interface EventPolicyInterface
 {
-    public function can($data): bool;
+
+	/**
+	 * @param $data
+	 *
+	 * @return bool
+	 */
+	public function can($data): bool;
 }

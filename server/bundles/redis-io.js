@@ -86,13 +86,14 @@ class RedisIO {
                             break;
                         default:
                             data.room = socket.roomIO.name();
-                            console.log('    ' + name + ':' + data);
+                            console.log('    ' + name + ': ' + JSON.stringify(data));
                             this.pub.publish(channel + '.io', JSON.stringify({
                                 name: name,
                                 data: data,
                                 channel: nsp
                             }));
-                    }
+							break;
+					}
                 } else {
                     throw new Error(util.format('Socket %s "can not get access/speed limit", nsp: %s, room: %s, name: %s, data: %s', socket.id, nsp, socket.roomIO.name(), name, JSON.stringify(data)));
                 }

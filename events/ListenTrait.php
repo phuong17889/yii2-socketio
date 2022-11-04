@@ -41,11 +41,12 @@ trait ListenTrait
 	}
 
 	/**
+	 * one channel has only one room event
 	 * @return string
 	 */
 	public static function name(): string
 	{
-		return 'room';//one channel has only one room event
+		return 'room';
 	}
 
 	/**

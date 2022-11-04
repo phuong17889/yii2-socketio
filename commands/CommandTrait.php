@@ -15,7 +15,7 @@ trait CommandTrait
     /**
      * @var string
      */
-    public $server = 'locahost:1212';
+    public $server = 'locahost:1367';
 
     /**
      * [

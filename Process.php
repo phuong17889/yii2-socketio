@@ -8,12 +8,6 @@ use Yii;
 /**
  * Class Process
  *
- * @package SfCod\SocketIoBundle
- */
-
-/**
- * Class Process
- *
  * @package phuong17889\socketio
  */
 class Process
@@ -62,8 +56,8 @@ class Process
      */
     private function inWork()
     {
-        foreach (self::$_inWork as $i => $proccess) {
-            if (false === $proccess->isRunning()) {
+        foreach (self::$_inWork as $i => $process) {
+            if (false === $process->isRunning()) {
                 unset(self::$_inWork[$i]);
             }
         }

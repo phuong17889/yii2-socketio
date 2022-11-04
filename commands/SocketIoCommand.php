@@ -34,21 +34,30 @@ class SocketIoCommand extends DaemonController
 	 */
 	public function worker()
     {
-	    $process = $this->nodejs();
-		$process->setTimeout(3600);
-	    try {
-		    $process->run();
-		    if (!$process->isSuccessful()) {
-			    echo $process->getErrorOutput();
-			    exit(0);
-		    }
-		    // Save node process pid
-		    $this->addPid($process->getPid());
-		    while ($process->isRunning()) {
-			    $this->predis();
-		    }
-	    } catch (ProcessTimedOutException $e) {
-		    $this->actionRestart();
-	    }
+	    $this->actionIndex();
     }
+
+	/**
+	 * @return void
+	 * @throws InvalidConfigException
+	 */
+	public function actionIndex()
+	{
+		$process = $this->nodejs();
+		$process->setTimeout(3600);
+		try {
+			$process->run();
+			if (!$process->isSuccessful()) {
+				echo $process->getErrorOutput();
+				exit(0);
+			}
+			// Save node process pid
+			$this->addPid($process->getPid());
+			while ($process->isRunning()) {
+				$this->predis();
+			}
+		} catch (ProcessTimedOutException $e) {
+			$this->actionRestart();
+		}
+	}
 }
