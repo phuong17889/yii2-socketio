@@ -77,8 +77,8 @@ class Process
 		    'php',
 		    'yii',
 		    'socketio/process',
-		    escapeshellarg($handle),
-		    escapeshellarg(json_encode($data)),
+		    $handle,
+		    json_encode($data),
 	    ];
 
         if (is_null($this->yiiAlias)) {
@@ -90,7 +90,7 @@ class Process
         }
 	    $process = new SymfonyProcess($cmd, Yii::getAlias($this->yiiAlias));
         $process->setTimeout(10);
-        $process->start();
+        $process->run();
 
         self::$_inWork[] = $process;
 

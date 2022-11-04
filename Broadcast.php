@@ -3,7 +3,6 @@
 namespace phuong17889\socketio;
 
 use Exception;
-use phuong17889\socketio\drivers\RedisDriver;
 use phuong17889\socketio\events\EventInterface;
 use phuong17889\socketio\events\EventPolicyInterface;
 use phuong17889\socketio\events\EventPubInterface;
@@ -23,6 +22,9 @@ use yii\helpers\Json;
 class Broadcast
 {
 
+    /**
+     * @var array
+     */
     protected static $channels = [];
 
     /**
@@ -44,7 +46,7 @@ class Broadcast
             'name' => $event,
             'data' => $data,
         ]), 'socket.io');
-        $eventClassName = self::getManager()->getListReverse()[$event] ?? null;
+        $eventClassName = Yii::$app->broadcastEvent->getListReverse()[$event] ?? null;
         if ($eventClassName !== null) {
             Yii::$container->get(Process::class)->run($eventClassName, $data);
         } else {
@@ -87,7 +89,7 @@ class Broadcast
      */
     public static function emit(string $event, array $data)
     {
-        $eventClassName = self::getManager()->getList()[$event] ?? null;
+        $eventClassName = Yii::$app->broadcastEvent->getList()[$event] ?? null;
         try {
             if (null === $eventClassName) {
                 throw new Exception("Can not find $event");
@@ -162,7 +164,7 @@ class Broadcast
      */
     public static function channelName($name)
     {
-        return $name . self::getManager()->nsp;
+        return $name . Yii::$app->broadcastEvent->nsp;
     }
 
     /**
@@ -173,7 +175,7 @@ class Broadcast
      */
     public static function publish(string $channel, array $data)
     {
-        static::getDriver()->getConnection(true)->publish($channel, Json::encode($data));
+        Yii::$app->broadcastDriver->publish($channel, Json::encode($data));
     }
 
     /**
@@ -184,31 +186,14 @@ class Broadcast
     public static function channels(): array
     {
         if (empty(self::$channels)) {
-            foreach (self::getManager()->getList() as $eventClassName) {
+            foreach (Yii::$app->broadcastEvent->getList() as $eventClassName) {
                 self::$channels = ArrayHelper::merge(self::$channels, $eventClassName::broadcastOn());
             }
             self::$channels = array_unique(self::$channels);
             self::$channels = array_map(function ($channel) {
                 return static::channelName($channel);
             }, self::$channels);
-            //Yii::info(Json::encode(self::$channels));
         }
         return self::$channels;
-    }
-
-    /**
-     * @return RedisDriver
-     */
-    public static function getDriver()
-    {
-        return Yii::$app->broadcastDriver;
-    }
-
-    /**
-     * @return EventManager
-     */
-    public static function getManager()
-    {
-        return Yii::$app->broadcastEvents;
     }
 }

@@ -48,8 +48,8 @@ Config
 ##### Common config
 ```php
     'components' =>[
-        'broadcastEvents' => [
-            'class' => \phuong17889\socketio\EventManager::class,
+        'broadcastEvent' => [
+            'class' => \phuong17889\socketio\components\BroadcastEvent::class,
             'nsp' => 'some_unique_key', //must be changed
             // Namespaces with events folders
             'namespaces' => [
@@ -57,7 +57,7 @@ Config
             ]
         ],
         'broadcastDriver' => [
-            'class' => \phuong17889\socketio\drivers\RedisDriver::class,
+            'class' => \phuong17889\socketio\components\BroadcastDriver::class,
             'hostname' => 'localhost',
             'port' => 6379,
         ],    
@@ -265,7 +265,7 @@ You should use trait `ListenTrait`
     use phuong17889\socketio\events\EventPubInterface;
     use phuong17889\socketio\events\EventInterface;
     use phuong17889\socketio\events\EventRoomInterface;
-    use phuong17889\socketio\events\ListenTrait;
+    use phuong17889\socketio\traits\ListenTrait;
     
     class CountEvent implements EventInterface, EventPubInterface, EventRoomInterface
     {

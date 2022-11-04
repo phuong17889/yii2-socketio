@@ -1,6 +1,6 @@
 <?php
 
-namespace phuong17889\socketio;
+namespace phuong17889\socketio\components;
 
 use Yii;
 use yii\base\Component;
@@ -10,7 +10,7 @@ use yii\base\Component;
  * @property-read array $listReverse
  * @property-read array $list
  */
-class EventManager extends Component
+class BroadcastEvent extends Component
 {
     /**
      * Array of events namespaces
@@ -33,12 +33,12 @@ class EventManager extends Component
      */
     protected static $list = [];
 
-	/**
-	 * List with all events but reverse
-	 *
-	 * @var array
-	 */
-	protected static $listReverse = [];
+    /**
+     * List with all events but reverse
+     *
+     * @var array
+     */
+    protected static $listReverse = [];
 
     /**
      * @return array

@@ -1,21 +1,21 @@
 <?php
 
-namespace phuong17889\socketio\commands;
+namespace phuong17889\socketio\traits;
 
 use Exception;
 use phuong17889\socketio\Broadcast;
+use Predis\Connection\ConnectionException;
 use Symfony\Component\Process\Process;
 use Yii;
-use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 
 trait CommandTrait
 {
     /**
-     * @var string
+     * @var string $server
      */
-    public $server = 'locahost:1367';
+    public $server = 'localhost:1367';
 
     /**
      * [
@@ -23,7 +23,7 @@ trait CommandTrait
      *     cert => 'path to cert',
      * ]
      *
-     * @var array
+     * @var array $ssl
      */
     public $ssl = [];
 
@@ -35,18 +35,26 @@ trait CommandTrait
         Broadcast::process($handler, @json_decode($data, true) ?? []);
     }
 
-	/**
-	 * @return Process
-	 */
-	public function nodejs()
+    /**
+     * @param $text
+     */
+    protected function output($text)
+    {
+        $this->stdout($text);
+    }
+
+    /**
+     * @return Process
+     */
+    public function nodejs()
     {
         // Automatically send every new message to available log routes
         Yii::getLogger()->flushInterval = 1;
-	    $cmd = [
-			'node',
-		    realpath(dirname(__FILE__) . '/../server') . '/index.js',
-	    ];
-	    $driver = Broadcast::getDriver();
+        $cmd = [
+            '/usr/bin/node',
+            realpath(dirname(__FILE__) . '/../server') . '/index.js',
+        ];
+        $driver = Yii::$app->broadcastDriver;
         $args = array_filter([
             'server' => $this->server,
             'pub' => Json::encode(array_filter([
@@ -60,29 +68,26 @@ trait CommandTrait
                 'password' => $driver->password,
             ])),
             'channels' => implode(',', Broadcast::channels()),
-            'nsp' => Broadcast::getManager()->nsp,
+            'nsp' => Yii::$app->broadcastEvent->nsp,
             'ssl' => empty($this->ssl) ? null : Json::encode($this->ssl),
             'runtime' => Yii::getAlias('@runtime/logs'),
         ], 'strlen');
-	    foreach ($args as $key => $value) {
-		    $cmd[] = "-" . $key . "=" . $value ;
-	    }
-	    return new Process($cmd);
+        foreach ($args as $key => $value) {
+            $cmd[] = "-" . $key . "='" . $value . "'";
+        }
+        return Process::fromShellCommandline(implode(' ', $cmd) . ' &');
     }
 
-	/**
-	 * Predis process
-	 * @throws InvalidConfigException
-	 * @throws Exception
-	 */
+    /**
+     * Predis process
+     * @return bool
+     * @throws Exception
+     */
     public function predis()
     {
-        $pubSubLoop = function () {
-            $client = Broadcast::getDriver()->getConnection(true);
-
+        $pubsubloop = function () {
             // Initialize a new pubsub consumer.
-            $pubsub = $client->pubSubLoop();
-
+            $pubsub = Yii::$app->broadcastDriver->pubSubLoop();
             $channels = [];
             foreach (Broadcast::channels() as $key => $channel) {
                 $channels[$key] = $channel . '.io';
@@ -111,9 +116,9 @@ trait CommandTrait
                         } else {
                             $payload = Json::decode($message->payload);
                             $data = $payload['data'] ?? [];
-	                        if (isset($data['channel']) && $data['channel'] != '' && strpos($payload['name'], $data['channel']) === false) {
-		                        $payload['name'] = $data['channel'] . '_' . $payload['name'];
-	                        }
+                            if (isset($data['channel']) && $data['channel'] != '' && strpos($payload['name'], $data['channel']) === false) {
+                                $payload['name'] = $data['channel'] . '_' . $payload['name'];
+                            }
                             Broadcast::on($payload['name'], $data);
                             // Received the following message from {$message->channel}:") {$message->payload}";
                         }
@@ -126,12 +131,11 @@ trait CommandTrait
             // desynchronizations between the client and the server.
             unset($pubsub);
         };
-
         // Auto recconnect on redis timeout
         try {
-            $pubSubLoop();
-        } catch (\Predis\Connection\ConnectionException $e) {
-            $pubSubLoop();
+            $pubsubloop();
+        } catch (ConnectionException $e) {
+            $pubsubloop();
         }
 
         return true;

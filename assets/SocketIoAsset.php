@@ -1,6 +1,6 @@
 <?php
 
-namespace phuong17889\socketio;
+namespace phuong17889\socketio\assets;
 
 use yii\web\AssetBundle;
 
@@ -14,7 +14,7 @@ class SocketIoAsset extends AssetBundle
     /**
      * @var string
      */
-    public $sourcePath = '@vendor/phuong17889/yii2-socketio/server/node_modules/socket.io-client/dist';
+    public $sourcePath = '@vendor/phuong17889/yii2-socketio/node_modules/socket.io-client/dist';
 
     /**
      * @var array
