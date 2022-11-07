@@ -63,8 +63,10 @@ Config
         ],    
     ]
 ```
-## Publisher
-### Create publisher from server to client
+Usage
+-----
+### Publisher
+Create publisher from server to client
 ```php
     use phuong17889\socketio\events\EventInterface;
     use phuong17889\socketio\events\EventPubInterface;
@@ -72,7 +74,7 @@ Config
     class CountEvent implements EventInterface, EventPubInterface
     {
         /**
-         * Changel name. For client side this is nsp.
+         * Channel name. For client side this is nsp.
          */
         public static function broadcastOn(): array
         {
@@ -98,20 +100,22 @@ Config
         }
     }
 ```
+On client using socketio to receive data from server
 ```js
     var socket = io('localhost:1367/notifications');
     socket.on('update_notification_count', function(data){
         console.log(data)
     });
 ```
+Using to broadcast data to client
 ```php
     //Run broadcast to client
     \phuong17889\socketio\Broadcast::emit(CountEvent::name(), ['count' => 10]);
 
 ```
 
-## Receiver
-### Create receiver from client to server
+### Receiver
+Create receiver from client to server
 ```php
     use phuong17889\socketio\events\EventInterface;
     use phuong17889\socketio\events\EventSubInterface;
@@ -143,22 +147,18 @@ Config
         {
             // Mark notification as read
             // And call client update
-            // Broadcast::emit('update_notification_count', ['some_key' => 'some_value']);
-            
-            // Push some log
-            file_put_contents(\Yii::getAlias('@app/../file.txt'), serialize($data));
+            file_put_contents(\Yii::getAlias('@app/file.txt'), json_encode($data));
         }
     }
 ```
+On client using socketio to emit data to server
 ```js
     var socket = io('localhost:1367/notifications');
     socket.emit('mark_as_read_notification', {id: 10});
 ```
-
 ### Receiver with checking from client to server
 You can have publisher and receiver in one event. If you need check data from client to server you should use: 
 - EventPolicyInterface
-
 ```php
     use phuong17889\socketio\events\EventSubInterface;
     use phuong17889\socketio\events\EventInterface;
@@ -182,6 +182,10 @@ You can have publisher and receiver in one event. If you need check data from cl
             return 'mark_as_read_notification';
         }
          
+        /**
+        * @param $data
+        * @return bool
+        */
         public function can($data): bool
         {
             // Check data from client    
@@ -197,12 +201,11 @@ You can have publisher and receiver in one event. If you need check data from cl
         {
             // Mark notification as read
             // And call client update
-            Broadcast::emit('update_notification_count', ['some_key' => 'some_value']);
+            file_put_contents(\Yii::getAlias('@app/file.txt'), json_encode($data));
         }
     }
 ```
 
-## Room
 ### Subscribe room
 Socket.io has room function. If you need it, you should implement `EventRoomInterface`
 
@@ -217,7 +220,7 @@ Socket.io has room function. If you need it, you should implement `EventRoomInte
          * User id
          * @var int
          */
-        protected $userId;
+        protected $user_id;
         
         /**
          * Channel name. For client side this is nsp.
@@ -241,7 +244,7 @@ Socket.io has room function. If you need it, you should implement `EventRoomInte
          */
         public function room(): string
         {
-            return 'user_id_' . $this->userId;
+            return 'user_id_' . $this->user_id;
         }            
             
         /**
@@ -251,7 +254,7 @@ Socket.io has room function. If you need it, you should implement `EventRoomInte
          */
         public function fire(array $data): array
         {
-            $this->userId = $data['userId'];
+            $this->user_id = $data['user_id'];
             return [
                 'count' => 10,
             ];
@@ -260,7 +263,6 @@ Socket.io has room function. If you need it, you should implement `EventRoomInte
 ```
 ### Subscribe room with event
 You should use trait `ListenTrait`
-
 ```php
     use phuong17889\socketio\events\EventPubInterface;
     use phuong17889\socketio\events\EventInterface;
@@ -329,9 +331,10 @@ You should use trait `ListenTrait`
     }
 
 ```
+On client using socketio to join the room, and listen data
 ```js
     var socket = io('localhost:1367/notifications');
-    socket.emit('join', {room: 'user_id_<?= 10 ?>'});
+    socket.emit('join', {room: 'user_id_10'});
     // Now you will receive data from 'room-10'
     socket.on('update_notification_count', function(data){
         console.log(data)
@@ -339,8 +342,11 @@ You should use trait `ListenTrait`
     // You can leave room
     socket.emit('leave');
 ```
+Using to broadcast data to client on the room
 ```php
     //Run broadcast to user id = 10 
-    \phuong17889\socketio\Broadcast::emitToRoom(CountEvent::class, ['count' => 10, 'userId' => 10]);
-
+    \phuong17889\socketio\Broadcast::emitToRoom(CountEvent::class, [
+        'count' => 4, 
+        'user_id' => 10,//push data to room-10
+    ]);
 ```

@@ -3,6 +3,7 @@
 namespace phuong17889\socketio\assets;
 
 use yii\web\AssetBundle;
+use yii\web\View;
 
 /**
  * Access Message asset bundle.
@@ -20,4 +21,9 @@ class SocketIoAsset extends AssetBundle
      * @var array
      */
     public $js = ['socket.io.js'];
+
+    /**
+     * @var array
+     */
+    public $jsOptions = ['position' => View::POS_HEAD];
 }
