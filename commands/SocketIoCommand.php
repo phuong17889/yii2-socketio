@@ -46,8 +46,8 @@ class SocketIoCommand extends DaemonController
         $process->setTimeout(3);
         try {
             $process->start();
-            while ($process->isRunning()) {
-                $this->addPid($process->getPid());
+	        while ($process->isRunning()) {
+		        $this->addPid($process->getPid() + 1);
                 $this->predis();
             }
         } catch (ProcessTimedOutException $e) {

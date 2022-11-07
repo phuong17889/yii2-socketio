@@ -49,8 +49,6 @@ class Broadcast
         $eventClassName = Yii::$app->broadcastEvent->getListReverse()[$event] ?? null;
         if ($eventClassName !== null) {
             Yii::$container->get(Process::class)->run($eventClassName, $data);
-        } else {
-            Yii::error(LoggerMessage::trace("Can not find $event", $data));
         }
     }
 

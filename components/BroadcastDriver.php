@@ -7,8 +7,8 @@ use Predis\PubSub\Consumer;
 use yii\base\Component;
 
 /**
- * @method Consumer|null pubSubLoop()
- * @method Consumer|null publish()
+ * @method Consumer|Client|null pubSubLoop()
+ * @method Consumer|null publish(string $channel, string $data)
  */
 class BroadcastDriver extends Component
 {
@@ -60,6 +60,7 @@ class BroadcastDriver extends Component
      */
     public function __call($name, $params)
     {
-        return $this->connection->$name($params);
+        return $this->connection->$name(...$params);
+	    //return call_user_func_array([$this->connection, $name], $params);
     }
 }
