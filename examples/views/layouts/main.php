@@ -9,6 +9,7 @@ use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
+use yii\helpers\Url;
 
 AppAsset::register($this);
 
@@ -68,7 +69,20 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
         </div>
     </div>
 </footer>
-
+<script>
+	$(document).on('click', '.btn-broadcast:not(.loading)', function () {
+		let th = $(this);
+		th.addClass('loading').html('<i class="fa fa-spin fa-spinner"></i>');
+		$.ajax({
+			type: 'post',
+			cache: false,
+			url: '<?=Url::to(['/broadcast'])?>/' + th.attr('data-event'),
+			success: function () {
+				th.removeClass('loading').html('click here');
+			}
+		})
+	});
+</script>
 <?php $this->endBody() ?>
 </body>
 </html>

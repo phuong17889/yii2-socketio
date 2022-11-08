@@ -8,9 +8,9 @@
             <h5 class="card-title">Starter</h5>
         </div>
         <div class="card-body">
-            This demo will show how <b>Publisher</b> work.<br>
-            Run the command <code>php yii broadcast/publisher</code> or
-            <button type="button" data-event="publisher" class="btn btn-broadcast btn-sm btn-primary">click here
+            This demo will show how <b>Receiver</b> work.<br>
+            Run the command <code>php yii broadcast/receiver</code> or
+            <button type="button" data-event="receiver" class="btn btn-broadcast btn-sm btn-primary">click here
             </button>
         </div>
     </div>

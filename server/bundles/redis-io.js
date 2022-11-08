@@ -85,7 +85,10 @@ class RedisIO {
                             }));
                             break;
                         default:
-                            data.room = socket.roomIO.name();
+                            if (socket.roomIO) {
+                                data.room = socket.roomIO.name();
+                            }
+                            data.channel = nsp;
                             console.log('    ' + name + ': ' + JSON.stringify(data));
                             this.pub.publish(channel + '.io', JSON.stringify({
                                 name: name,
@@ -100,8 +103,8 @@ class RedisIO {
             });
             socket.on('disconnect', () => {
                 // socket.io disconnect
-                console.log('    disconnect: ' + socket.roomIO.name());
                 if(socket.roomIO) {
+                    console.log('    disconnect: ' + socket.roomIO.name());
                     this.pub.publish(channel + '.io', JSON.stringify({
                         name: 'room',
                         data: {
