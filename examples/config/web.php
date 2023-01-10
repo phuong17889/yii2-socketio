@@ -14,13 +14,13 @@ $config = [
     ],
     'components' => [
         'broadcastEvent' => [
-            'class' => '\phuong17889\socketio\components\BroadcastEvent',
+            'class' => '\phuongdev89\socketio\components\BroadcastEvent',
             'nsp' => 'test', //must be changed
             // Namespaces with events folders
             'namespaces' => require 'events.php'
         ],
         'broadcastDriver' => [
-            'class' => '\phuong17889\socketio\components\BroadcastDriver',
+            'class' => '\phuongdev89\socketio\components\BroadcastDriver',
             'hostname' => '192.168.16.1',
             'port' => 6379,
         ],

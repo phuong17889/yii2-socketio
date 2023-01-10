@@ -1,14 +1,13 @@
 <?php
 /**
- * Created by FES VPN.
  * @project bestbuyiptv-shop
- * @author  Le Phuong
- * @email   phuong17889[at]gmail.com
+ * @author  Phuong Dev
+ * @email   phuongdev89@gmail.com
  * @date    3/26/2021
  * @time    11:39 AM
  */
 
-namespace phuong17889\socketio\traits;
+namespace phuongdev89\socketio\traits;
 
 trait ListenTrait
 {

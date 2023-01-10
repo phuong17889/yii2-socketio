@@ -3,9 +3,9 @@
 namespace app\events\receiver;
 
 use Exception;
-use phuong17889\socketio\Broadcast;
-use phuong17889\socketio\events\EventInterface;
-use phuong17889\socketio\events\EventSubInterface;
+use phuongdev89\socketio\Broadcast;
+use phuongdev89\socketio\events\EventInterface;
+use phuongdev89\socketio\events\EventSubInterface;
 
 class RequestEvent implements EventSubInterface, EventInterface
 {

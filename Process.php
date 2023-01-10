@@ -1,6 +1,6 @@
 <?php
 
-namespace phuong17889\socketio;
+namespace phuongdev89\socketio;
 
 use Symfony\Component\Process\Process as SymfonyProcess;
 use Yii;
@@ -8,7 +8,7 @@ use Yii;
 /**
  * Class Process
  *
- * @package phuong17889\socketio
+ * @package phuongdev89\socketio
  */
 class Process
 {

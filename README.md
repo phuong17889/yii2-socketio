@@ -3,11 +3,9 @@ Socket.io Yii extension
 
 Use all power of socket.io in your Yii 2 project.
 
-[![Latest Stable Version](https://poser.pugx.org/phuong17889/yii2-socketio/v/stable)](https://packagist.org/packages/phuong17889/yii2-socketio) [![Total Downloads](https://poser.pugx.org/phuong17889/yii2-socketio/downloads)](https://packagist.org/packages/phuong17889/yii2-socketio)
-
 Install
 ------
-##### Install nodejs
+##### Install nodejs (tested with node 16)
 ```
     curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
     sudo apt-get install -y nodejs
@@ -16,12 +14,12 @@ Install
 ```bash
 {
     "require" : {
-        "phuong17889/yii2-socketio": "^2"
+        "phuongdev89/yii2-socketio": "^2"
     },
     ...
     "scripts" : {
-        "post-install-cmd": "cd vendor/phuong17889/yii2-socketio && /usr/bin/npm install",
-        "post-update-cmd": "cd vendor/phuong17889/yii2-socketio && /usr/bin/npm install"
+        "post-install-cmd": "cd vendor/phuongdev89/yii2-socketio && /usr/bin/npm install",
+        "post-update-cmd": "cd vendor/phuongdev89/yii2-socketio && /usr/bin/npm install"
     }
 }
 ```
@@ -31,7 +29,7 @@ Config
 ```php
     'controllerMap' => [
         'socketio' => [
-            'class' => \phuong17889\socketio\commands\SocketIoCommand::class,
+            'class' => \phuongdev89\socketio\commands\SocketIoCommand::class,
             'server' => 'localhost:1367'
         ],
     ]       
@@ -49,7 +47,7 @@ Config
 ```php
     'components' =>[
         'broadcastEvent' => [
-            'class' => \phuong17889\socketio\components\BroadcastEvent::class,
+            'class' => \phuongdev89\socketio\components\BroadcastEvent::class,
             'nsp' => 'some_unique_key', //must be changed
             // Namespaces with events folders
             'namespaces' => [
@@ -57,7 +55,7 @@ Config
             ]
         ],
         'broadcastDriver' => [
-            'class' => \phuong17889\socketio\components\BroadcastDriver::class,
+            'class' => \phuongdev89\socketio\components\BroadcastDriver::class,
             'hostname' => 'localhost',
             'port' => 6379,
         ],    
@@ -68,8 +66,8 @@ Usage
 ### Publisher
 Create publisher from server to client
 ```php
-    use phuong17889\socketio\events\EventInterface;
-    use phuong17889\socketio\events\EventPubInterface;
+    use phuongdev89\socketio\events\EventInterface;
+    use phuongdev89\socketio\events\EventPubInterface;
     
     class CountEvent implements EventInterface, EventPubInterface
     {
@@ -110,15 +108,15 @@ On client using socketio to receive data from server
 Using to broadcast data to client
 ```php
     //Run broadcast to client
-    \phuong17889\socketio\Broadcast::emit(CountEvent::name(), ['count' => 10]);
+    \phuongdev89\socketio\Broadcast::emit(CountEvent::name(), ['count' => 10]);
 
 ```
 
 ### Receiver
 Create receiver from client to server
 ```php
-    use phuong17889\socketio\events\EventInterface;
-    use phuong17889\socketio\events\EventSubInterface;
+    use phuongdev89\socketio\events\EventInterface;
+    use phuongdev89\socketio\events\EventSubInterface;
     
     class MarkAsReadEvent implements EventInterface, EventSubInterface
     {
@@ -160,9 +158,9 @@ On client using socketio to emit data to server
 You can have publisher and receiver in one event. If you need check data from client to server you should use: 
 - EventPolicyInterface
 ```php
-    use phuong17889\socketio\events\EventSubInterface;
-    use phuong17889\socketio\events\EventInterface;
-    use phuong17889\socketio\events\EventPolicyInterface;
+    use phuongdev89\socketio\events\EventSubInterface;
+    use phuongdev89\socketio\events\EventInterface;
+    use phuongdev89\socketio\events\EventPolicyInterface;
     
     class MarkAsReadEvent implements EventInterface, EventSubInterface, EventPolicyInterface
     {
@@ -210,9 +208,9 @@ You can have publisher and receiver in one event. If you need check data from cl
 Socket.io has room function. If you need it, you should implement `EventRoomInterface`
 
 ```php
-    use phuong17889\socketio\events\EventPubInterface;
-    use phuong17889\socketio\events\EventInterface;
-    use phuong17889\socketio\events\EventRoomInterface;
+    use phuongdev89\socketio\events\EventPubInterface;
+    use phuongdev89\socketio\events\EventInterface;
+    use phuongdev89\socketio\events\EventRoomInterface;
     
     class CountEvent implements EventInterface, EventPubInterface, EventRoomInterface
     {
@@ -264,10 +262,10 @@ Socket.io has room function. If you need it, you should implement `EventRoomInte
 ### Subscribe room with event
 You should use trait `ListenTrait`
 ```php
-    use phuong17889\socketio\events\EventPubInterface;
-    use phuong17889\socketio\events\EventInterface;
-    use phuong17889\socketio\events\EventRoomInterface;
-    use phuong17889\socketio\traits\ListenTrait;
+    use phuongdev89\socketio\events\EventPubInterface;
+    use phuongdev89\socketio\events\EventInterface;
+    use phuongdev89\socketio\events\EventRoomInterface;
+    use phuongdev89\socketio\traits\ListenTrait;
     
     class CountEvent implements EventInterface, EventPubInterface, EventRoomInterface
     {
@@ -345,7 +343,7 @@ On client using socketio to join the room, and listen data
 Using to broadcast data to client on the room
 ```php
     //Run broadcast to user id = 10 
-    \phuong17889\socketio\Broadcast::emitToRoom(CountEvent::class, [
+    \phuongdev89\socketio\Broadcast::emitToRoom(CountEvent::class, [
         'count' => 4, 
         'user_id' => 10,//push data to room-10
     ]);

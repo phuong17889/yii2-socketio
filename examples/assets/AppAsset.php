@@ -27,7 +27,7 @@ class AppAsset extends AssetBundle
     public $js = [
     ];
     public $depends = [
-        'phuong17889\socketio\assets\SocketIoAsset',
+        'phuongdev89\socketio\assets\SocketIoAsset',
         'yii\web\YiiAsset',
         'yii\bootstrap5\BootstrapAsset'
     ];

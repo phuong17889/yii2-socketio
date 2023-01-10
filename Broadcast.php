@@ -1,14 +1,14 @@
 <?php
 
-namespace phuong17889\socketio;
+namespace phuongdev89\socketio;
 
 use Exception;
-use phuong17889\socketio\events\EventInterface;
-use phuong17889\socketio\events\EventPolicyInterface;
-use phuong17889\socketio\events\EventPubInterface;
-use phuong17889\socketio\events\EventRoomInterface;
-use phuong17889\socketio\events\EventSubInterface;
-use phuong17889\socketio\helpers\LoggerMessage;
+use phuongdev89\socketio\events\EventInterface;
+use phuongdev89\socketio\events\EventPolicyInterface;
+use phuongdev89\socketio\events\EventPubInterface;
+use phuongdev89\socketio\events\EventRoomInterface;
+use phuongdev89\socketio\events\EventSubInterface;
+use phuongdev89\socketio\helpers\LoggerMessage;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\HtmlPurifier;
@@ -17,7 +17,7 @@ use yii\helpers\Json;
 /**
  * Class Broadcast
  *
- * @package phuong17889\socketio
+ * @package phuongdev89\socketio
  */
 class Broadcast
 {

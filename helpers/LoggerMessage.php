@@ -1,6 +1,6 @@
 <?php
 
-namespace phuong17889\socketio\helpers;
+namespace phuongdev89\socketio\helpers;
 
 use Throwable;
 use yii\helpers\Json;
@@ -9,7 +9,7 @@ use yii\helpers\Json;
  * Class LoggerMessage
  * Logger helper
  *
- * @package phuong17889\base\helpers
+ * @package phuongdev89\base\helpers
  */
 class LoggerMessage
 {

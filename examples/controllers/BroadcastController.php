@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use app\events\publisher\UpdateEvent;
 use Exception;
-use phuong17889\socketio\Broadcast;
+use phuongdev89\socketio\Broadcast;
 use yii\web\Controller;
 
 class BroadcastController extends Controller

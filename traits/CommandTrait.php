@@ -1,9 +1,9 @@
 <?php
 
-namespace phuong17889\socketio\traits;
+namespace phuongdev89\socketio\traits;
 
 use Exception;
-use phuong17889\socketio\Broadcast;
+use phuongdev89\socketio\Broadcast;
 use Predis\Connection\ConnectionException;
 use Symfony\Component\Process\Process;
 use Yii;

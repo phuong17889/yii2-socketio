@@ -1,6 +1,6 @@
 <?php
 
-namespace phuong17889\socketio\components;
+namespace phuongdev89\socketio\components;
 
 use Predis\Client;
 use Predis\PubSub\Consumer;

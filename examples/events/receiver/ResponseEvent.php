@@ -2,8 +2,8 @@
 
 namespace app\events\receiver;
 
-use phuong17889\socketio\events\EventInterface;
-use phuong17889\socketio\events\EventPubInterface;
+use phuongdev89\socketio\events\EventInterface;
+use phuongdev89\socketio\events\EventPubInterface;
 
 class ResponseEvent implements EventPubInterface, EventInterface
 {

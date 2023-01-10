@@ -1,17 +1,17 @@
 <?php
 
-namespace phuong17889\socketio\commands;
+namespace phuongdev89\socketio\commands;
 
 use Exception;
-use phuong17889\cron\commands\DaemonController;
-use phuong17889\socketio\traits\CommandTrait;
+use phuongdev89\cron\commands\DaemonController;
+use phuongdev89\socketio\traits\CommandTrait;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
 
 /**
  * Class SocketIoCommand
  * Run this daemon for listen socketio. Don't forget about run npm install in the folder "server".
  *
- * @package phuong17889\socketio\commands
+ * @package phuongdev89\socketio\commands
  */
 class SocketIoCommand extends DaemonController
 {

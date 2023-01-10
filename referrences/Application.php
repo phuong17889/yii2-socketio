@@ -2,8 +2,8 @@
 
 namespace yii\web;
 
-use phuong17889\socketio\components\BroadcastDriver;
-use phuong17889\socketio\components\BroadcastEvent;
+use phuongdev89\socketio\components\BroadcastDriver;
+use phuongdev89\socketio\components\BroadcastEvent;
 
 /**
  * @property BroadcastDriver $broadcastDriver

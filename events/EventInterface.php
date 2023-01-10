@@ -1,12 +1,12 @@
 <?php
 
-namespace phuong17889\socketio\events;
+namespace phuongdev89\socketio\events;
 
 /**
  * Interface EventInterface
  * Event name and broadcast nsp
  *
- * @package phuong17889\socketio\events
+ * @package phuongdev89\socketio\events
  */
 interface EventInterface
 {

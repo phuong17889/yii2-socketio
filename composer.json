@@ -1,5 +1,5 @@
 {
-	"name" : "phuong17889/yii2-socketio",
+	"name" : "phuongdev89/yii2-socketio",
 	"description" : "The simple and powerful socketio for the Yii2 framework",
 	"type" : "yii2-extension",
 	"license" : "MIT",
@@ -10,8 +10,8 @@
 			"role" : "Developer"
 		},
 		{
-			"name" : "Le Phuong",
-			"email" : "phuong17889@gmail.com",
+			"name" : "Phuong Dev",
+			"email" : "phuongdev89@gmail.com",
 			"role" : "Developer"
 		}
 	],
@@ -20,8 +20,8 @@
 		"php" : ">=7.2.5",
 		"ext-json" : "*",
 		"yiisoft/yii2" : "2.*",
-		"phuong17889/yii2-cron" : "*",
-		"phuong17889/yii2-base" : "*",
+		"phuongdev89/yii2-cron" : "*",
+		"phuongdev89/yii2-base" : "*",
 		"predis/predis" : "^2",
 		"symfony/process" : "^5 || ^6"
 	},
@@ -33,7 +33,7 @@
 	],
 	"autoload" : {
 		"psr-4" : {
-			"phuong17889\\socketio\\" : "/"
+			"phuongdev89\\socketio\\" : "/"
 		}
 	},
 	"config" : {

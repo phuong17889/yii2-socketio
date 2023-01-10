@@ -1,12 +1,12 @@
 <?php
 
-namespace phuong17889\socketio\events;
+namespace phuongdev89\socketio\events;
 
 /**
  * Interface EventRoomInterface
  * Provide room support for event
  *
- * @package phuong17889\socketio\events
+ * @package phuongdev89\socketio\events
  */
 interface EventRoomInterface
 {
