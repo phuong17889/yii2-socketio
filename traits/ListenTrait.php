@@ -1,6 +1,5 @@
 <?php
 /**
- * @project bestbuyiptv-shop
  * @author  Phuong Dev
  * @email   phuongdev89@gmail.com
  * @date    3/26/2021
