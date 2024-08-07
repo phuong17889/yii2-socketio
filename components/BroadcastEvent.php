@@ -70,7 +70,7 @@ class BroadcastEvent extends Component
                 foreach (glob(sprintf('%s/**.php', $alias)) as $file) {
                     $className = sprintf('%s\%s', $namespace, basename($file, '.php'));
                     if (method_exists($className, 'name')) {
-                        if (strpos($className::name(), $key) !== false) {
+                        if (strpos($className::name(), (string)$key) !== false) {
                             static::$listReverse[$className::name()] = $className;
                         } else {
                             static::$listReverse[$key . '_' . $className::name()] = $className;

@@ -5,9 +5,9 @@ Use all power of socket.io in your Yii 2 project.
 
 Install
 ------
-##### Install nodejs (tested with node 16)
+##### Install nodejs (tested with node 18)
 ```
-    curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
     sudo apt-get install -y nodejs
 ```
 ##### Add to `composer.json`
